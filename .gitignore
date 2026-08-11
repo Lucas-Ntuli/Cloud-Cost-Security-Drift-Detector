@@ -1,0 +1,42 @@
+# Python
+
+```
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+ .eggs/
+ .venv/
+venv/
+env/
+.env
+.pytest_cache/
+.ruff_cache/
+*.log
+```
+
+# Terraform
+*.tfstate
+*.tfstate.*
+*.tvars
+!*.tfvars.file
+.terraform/
+.terraform.lock.hcl
+crash.log
+carsh.*.log
+
+# credentials
+*.pem
+*.key
+.env.local
+.env.*.local
+
+# editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# scanner output 
+reports/
+*.report.md
