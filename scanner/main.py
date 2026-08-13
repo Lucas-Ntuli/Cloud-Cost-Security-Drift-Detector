@@ -14,13 +14,13 @@ def main():
     except EnvironmentError as error:
         print(f"Configuration error: {error}")
         sys.exit(1)
-
+        
    tf_state = load_terraform_state(Config.TF_STATE_PATH)
    expected_accounts = extract_storage_accounts(tf_state)
    live_accounts = get_storage_accounts(
        Config.AZURE_SUBSCRIPTION_ID, Config.TARGET_RESOURCE_GROUP
    )
-
+   
   drift_findings = compare_storage_accounts(expected_accounts, live_accounts)
 
   policy_findings = []
