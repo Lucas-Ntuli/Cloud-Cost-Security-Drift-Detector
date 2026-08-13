@@ -2,11 +2,12 @@ import requests
 
 RETAIL_PRICES_API = "https://prices.azure.com/api/retail/prices"
 
-def estimate_storage_account_cost(location="eastus", sku="Standard_LRS")
-    """Look up an approximate monthly cost for a storage account SKU"""
+
+def estimate_storage_account_cost(location="eastus", sku="Standard_LRS"):
+    """Look up an approximate monthly cost for a storage account SKU."""
     filter_query = (
         f"serviceName eq 'Storage' and skuName eq '{sku}' "
-        f"and armRegionName eq '{location}' and priceType eq 'consumption' "
+        f"and armRegionName eq '{location}' and priceType eq 'Consumption'"
     )
     params = {"$filter": filter_query}
 
@@ -30,4 +31,4 @@ def estimate_storage_account_cost(location="eastus", sku="Standard_LRS")
         "currency": items[0].get("currencyCode", "USD"),
         "sku": sku,
         "location": location,
-        }
+    }

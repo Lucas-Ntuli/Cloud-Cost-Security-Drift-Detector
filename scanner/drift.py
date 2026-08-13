@@ -4,6 +4,7 @@ FIELDS_TO_COMPARE = [
     "min_tls_version",
 ]
 
+
 def compare_storage_accounts(expected_accounts, live_accounts):
     """Compare Terraform-expected vs live Azure storage accounts for drift."""
     drift_findings = []
@@ -19,31 +20,32 @@ def compare_storage_accounts(expected_accounts, live_accounts):
                "resource": name,
                "type": "missing_in_azure",
                "message": f"Resource '{name}' exists in Terraform but not in Azure.",
+        })
+        continue
+
+   for field in FIELDS_TO_COMPARE:
+       expected_value = expected.get(field)
+       live_value = live.get(field)
+
+       if expected_value != live_value:
+           drift_findings.append({
+               "resource": name,
+               "type": "config_drift",
+               "field": field,
+               "expected": expected_value,
+               "actual": live_value,
+               "message": (
+                  f"Field '{field}' drifted: expected {expected_value}, "
+                  f"found {live_value}."
+               ),
            })
-           continue
 
-      for field in FIELDS_TO_COMPARE:
-          expected_value = expected.get(field)
-          live_value = live.get(field)
+   for name in live_by_name:
+       if name not in expected_by_name:
+           drift_findings.append({
+               "resource": name,
+               "type": "unmanaged_in_azure",
+               "message": f"Resource '{name}' exists in Azure but not in Terraform.",
+           })
 
-          if expected_value != live_value:
-            drift_findings.append({
-                "resource": name,
-                "type": "config_drift",
-                "field": field,
-                "expected": expected_value,
-                "actual": live_value,
-                "message": (
-                     f"field '{field}' drifted: expected {expected_value},"
-                     f"found {live_value}."
-                )
-            })
-
-for name in live_by_name:
-    if name not in expected_by_name:
-       drift_findings.append({
-           "resource": name,
-           "type": "unmanaged_in_azure",
-           "message": f"Resource '{name}' exists in Azure but not in Terraform.",
-       })
-return drift_findings
+   return drift_findings
