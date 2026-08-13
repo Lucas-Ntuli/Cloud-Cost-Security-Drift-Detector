@@ -1,6 +1,6 @@
 from azure.identity import DefaultAzureCredential
 from azure.mgmt.storage import StorageManagementClient
- def get_storage_accounts(subscription_id, resource_group):
+def get_storage_accounts(subscription_id, resource_group):
      """Fetch live storage account properties from azure for comparison."""
      credential = DefaultAzureCredential()
      client = StorageManagementClient(credential, subscription_id)
