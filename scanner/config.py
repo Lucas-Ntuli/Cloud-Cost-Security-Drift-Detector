@@ -20,5 +20,5 @@ def validate(cls):
 
     if missing:
       raise EnvironmentError(
-        f"Missing required environment variables: {', '.join(missing)}
+        f"Missing required environment variables: {', '.join(missing)}"
       )
