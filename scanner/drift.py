@@ -23,29 +23,29 @@ def compare_storage_accounts(expected_accounts, live_accounts):
         })
         continue
 
-   for field in FIELDS_TO_COMPARE:
-       expected_value = expected.get(field)
-       live_value = live.get(field)
+    for field in FIELDS_TO_COMPARE:
+        expected_value = expected.get(field)
+        live_value = live.get(field)
 
-       if expected_value != live_value:
-           drift_findings.append({
-               "resource": name,
-               "type": "config_drift",
-               "field": field,
-               "expected": expected_value,
-               "actual": live_value,
-               "message": (
-                  f"Field '{field}' drifted: expected {expected_value}, "
-                  f"found {live_value}."
-               ),
-           })
+    if expected_value != live_value:
+        drift_findings.append({
+            "resource": name,
+            "type": "config_drift",
+            "field": field,
+            "expected": expected_value,
+            "actual": live_value,
+            "message": (
+                f"Field '{field}' drifted: expected {expected_value}, "
+                f"found {live_value}."
+            ),
+        })
 
-   for name in live_by_name:
-       if name not in expected_by_name:
-           drift_findings.append({
-               "resource": name,
-               "type": "unmanaged_in_azure",
-               "message": f"Resource '{name}' exists in Azure but not in Terraform.",
-           })
+    for name in live_by_name:
+        if name not in expected_by_name:
+            drift_findings.append({
+                "resource": name,
+                "type": "unmanaged_in_azure",
+                "message": f"Resource '{name}' exists in Azure but not in Terraform.",
+            })
 
-   return drift_findings
+    return drift_findings

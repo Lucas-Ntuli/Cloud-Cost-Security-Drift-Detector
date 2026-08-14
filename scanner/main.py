@@ -1,3 +1,4 @@
+import sys
 from config import Config
 from tf_state import load_terraform_state, extract_storage_accounts
 from azure_client import get_storage_accounts
@@ -5,7 +6,6 @@ from drift import compare_storage_accounts
 from policies import run_all_checks
 from cost import estimate_storage_account_cost
 from report import generate_markdown_report, write_report, send_slack_notification
-
 
 def main():
     """Orchestrate the drift detection, policy checks, cost estimate, and report."""
