@@ -47,19 +47,17 @@ jobs:
         working-directory: terraform
         run: terraform show -json terraform.tfstate > terraform.tfstate.json || terraform show -json > terraform.tfstate.json
 
-      - name: Build scanner image
-        run: docker build -t drift-scanner ./scanner
+      - name: Install scanner dependencies
+        run: pip install-r scanner/requirements.tx
 
       - name: run scanner
-        run: |
-          docker run --rm \
-            -e AZURE_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }} \
-            -e TARGET_RESOURCE_GROUP=${{ vars.TARGET_RESOURCE_GROUP }} \
-            -e SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }} \
-            -e TF_STATE_PATH=/workspace/terraform.tfstate.json \
-            -e REPORT_OUTPUT_PATH=/workspace/report.md \
-            -v ${{ github.workspace }}/terraform:/workspace \
-            drift-scanner
+        env:
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          TARGET_RESOURCE_GROUP: {{ vars.TARGET_RESOURCE_GROUP }}
+          SLACK_WEBHOOK_URL: {{ secrets.SLACK_WEBHOOK_URL }}
+          TF_STATE_PATH: terraform/terraform.tfstate.json
+          REPORT_OUTPUT_PATH: terraform/report.md
+        run: python scanner/main.py
       - name: Upload report artifact
         if: always()
         uses: actions/upload-artifact@v4
