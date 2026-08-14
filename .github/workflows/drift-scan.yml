@@ -48,13 +48,13 @@ jobs:
         run: terraform show -json terraform.tfstate > terraform.tfstate.json || terraform show -json > terraform.tfstate.json
 
       - name: Install scanner dependencies
-        run: pip install-r scanner/requirements.tx
+        run: pip install -r scanner/requirements.txt
 
       - name: run scanner
         env:
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          TARGET_RESOURCE_GROUP: {{ vars.TARGET_RESOURCE_GROUP }}
-          SLACK_WEBHOOK_URL: {{ secrets.SLACK_WEBHOOK_URL }}
+          TARGET_RESOURCE_GROUP: ${{ vars.TARGET_RESOURCE_GROUP }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           TF_STATE_PATH: terraform/terraform.tfstate.json
           REPORT_OUTPUT_PATH: terraform/report.md
         run: python scanner/main.py
