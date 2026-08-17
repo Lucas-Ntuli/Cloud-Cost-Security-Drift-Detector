@@ -45,7 +45,7 @@ jobs:
 
       - name: Terraform state to JSON
         working-directory: terraform
-        run: terraform show -json terraform.tfstate > terraform.tfstate.json || terraform show -json > terraform.tfstate.json
+        run: terraform show -json > terraform.tfstate.json
 
       - name: Install scanner dependencies
         run: pip install -r scanner/requirements.txt
