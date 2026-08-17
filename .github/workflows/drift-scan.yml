@@ -39,7 +39,7 @@ jobs:
 
       - name: terraform Plan
         working-directory: terraform
-        run: terraform -out=tfplan -detailed-exitcode
+        run: terraform plan -out=tfplan -detailed-exitcode
         continue-on-error: true
         id: tfplan
 
