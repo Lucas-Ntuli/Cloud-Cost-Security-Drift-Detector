@@ -36,16 +36,31 @@ jobs:
       - name: Terraform init
         working-directory: terraform
         run: terraform init
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_USE_OIDC: true
 
       - name: terraform Plan
         working-directory: terraform
         run: terraform plan -out=tfplan -detailed-exitcode
         continue-on-error: true
         id: tfplan
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_USE_OIDC: true
 
       - name: Terraform state to JSON
         working-directory: terraform
         run: terraform show -json > terraform.tfstate.json
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_USE_OIDC: true
 
       - name: Install scanner dependencies
         run: pip install -r scanner/requirements.txt
@@ -58,6 +73,7 @@ jobs:
           TF_STATE_PATH: terraform/terraform.tfstate.json
           REPORT_OUTPUT_PATH: terraform/report.md
         run: python scanner/main.py
+
       - name: Upload report artifact
         if: always()
         uses: actions/upload-artifact@v4
