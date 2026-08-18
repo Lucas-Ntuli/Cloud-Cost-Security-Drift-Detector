@@ -11,6 +11,7 @@ terraform {
     storage_account_name = "tfstatedriftdetector01"
     container_name       = "tfstate"
     key                  = "drift-detector.tfstate"
+    use_azuread_auth = true
   }
 }
 
