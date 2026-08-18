@@ -78,7 +78,7 @@ jobs:
         if: always()
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          run: python notify_slack.py
+        run: python notify_slack.py
 
       - name: Upload report artifact
         if: always()
