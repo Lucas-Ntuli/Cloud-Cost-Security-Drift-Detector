@@ -74,6 +74,12 @@ jobs:
           REPORT_OUTPUT_PATH: terraform/report.md
         run: python scanner/main.py
 
+      - name: Notify Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          run: python notify_slack.py
+
       - name: Upload report artifact
         if: always()
         uses: actions/upload-artifact@v4
