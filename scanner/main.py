@@ -32,6 +32,7 @@ def main():
         location=target_account.get("location") or "eastus"
         sku=target_account.get("sku") or "Standard_LRS"
         cost_estimate = estimate_storage_account_cost(location=location, sku=sku)
+        print(f"DEBUG cost_estimate: {cost_estimate}")
     else:
         cost_estimate = {"estimated_monthly_cost": None, "note": "No live storage accounts found for cost estimation."}
 
