@@ -26,8 +26,14 @@ def main():
     policy_findings = []
     for account in live_accounts:
         policy_findings.extend(run_all_checks(account))
-
-    cost_estimate = estimate_storage_account_cost()
+        
+    if live_accounts:
+        target_account = live_accounts[0]
+        location=target_account.get("location") or "eastus"
+        sku=target_account.get("sku") or "Standard_LRS"
+        cost_estimate = estimate_storage_account_cost(location=location, sku=sku)
+    else:
+        cost_estimate = {"estimated_monthly_cost": None, "note": "No live storage accounts found for cost estimation."}
 
     report_text = generate_markdown_report(
          drift_findings, policy_findings, cost_estimate
@@ -43,7 +49,6 @@ def main():
     ]
     if critical_findings or drift_findings:
         sys.exit(1)
-
-
+        
 if __name__ == "__main__":
     main()

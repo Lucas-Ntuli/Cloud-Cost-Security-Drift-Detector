@@ -13,6 +13,8 @@ def get_storage_accounts(subscription_id, resource_group):
 
         accounts.append({
             "name": properties.get("name"),
+            "location": properties.get("location"),
+            "sku": properties.get("sku", {}).get("name", "Standard_LRS"),
             "allow_blob_public_access": properties.get(
                 "allow_blob_public_access", False
             ),
