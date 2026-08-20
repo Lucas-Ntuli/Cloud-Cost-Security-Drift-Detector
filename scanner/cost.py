@@ -44,7 +44,7 @@ def estimate_storage_account_cost(location="eastus", sku="Standard_LRS"):
     unit_price = selected.get("retailPrice", 0)
     unit_of_measure = selected.get("unitOfMeasure", "")
 
-    # NOTE: Storage pricing is typically per GB/month, not per hour.
+    # Storage pricing is typically per GB/month, not per hour.
     # Multiplying by hours_per_month is only correct if unitOfMeasure is hourly.
     if "hour" in unit_of_measure.lower():
         estimated_monthly_cost = round(unit_price * 730, 2)
